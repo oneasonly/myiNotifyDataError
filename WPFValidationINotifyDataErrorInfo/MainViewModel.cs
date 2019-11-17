@@ -11,12 +11,13 @@ namespace WPFValidationINotifyDataErrorInfo
     public class MainViewModel : BindableBase, INotifyDataErrorInfo
     {
         private string _userName;
-        private PayRecord _payrecToSend = new PayRecord();
+        private PayRecord _payrecToSend = new PayRecord();        
         private readonly Dictionary<string, List<string>> _errorsByPropertyName = new Dictionary<string, List<string>>();
 
         public MainViewModel()
         {
             UserName = null;
+            _payrecToSend.AttrStrings = new List<string>() { "one", "two", "three"};
         }
 
         public string PayName
@@ -28,6 +29,21 @@ namespace WPFValidationINotifyDataErrorInfo
                 PayrecToSend.Name = value;
                 RaisePropertyChanged(nameof(PayName));
                 ValidatePayrec();
+            }
+        }
+
+        public List<string> AttrStrings
+        {
+            get
+            {
+                Trace.WriteLine($"AttrStrings GET");
+                return PayrecToSend.AttrStrings;                
+            }
+            set
+            {
+                Trace.WriteLine($"AttrStrings SETTER");
+                PayrecToSend.AttrStrings = value;
+                RaisePropertyChanged(nameof(AttrStrings));
             }
         }
 

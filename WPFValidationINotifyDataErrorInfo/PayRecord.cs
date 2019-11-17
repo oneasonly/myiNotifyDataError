@@ -10,7 +10,7 @@ namespace WPFValidationINotifyDataErrorInfo
     [XmlRoot]
     public class PayRecord
     {
-
+        public List<string> AttrStrings { get; set; } = new List<string>();
         [XmlAttribute()]
         public string Code { get; set; }
         [XmlAttribute()]

@@ -50,7 +50,24 @@ namespace WPFValidationINotifyDataErrorInfo
             var binding = new Binding($"UserName");
             binding.Mode = BindingMode.TwoWay;
             binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-            //binding.ValidatesOnNotifyDataErrors = true;
+            txtbox.SetBinding(TextBox.TextProperty, binding);
+            mPanel.Children.Add(txtbox);
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            labelInfo.Text = $"Payrec.Name={model.PayrecToSend.Name};\nPayName={model.PayName}\n";
+            model.AttrStrings.ForEach(x => labelInfo.Text += $"{x}; ");
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            var txtbox = new TextBox();
+            txtbox.Margin = new Thickness(20);
+            HintAssist.SetHint(txtbox, "hint AttrStrings");
+            var binding = new Binding($"AttrStrings[1]");
+            binding.Mode = BindingMode.TwoWay;
+            binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             txtbox.SetBinding(TextBox.TextProperty, binding);
             mPanel.Children.Add(txtbox);
         }

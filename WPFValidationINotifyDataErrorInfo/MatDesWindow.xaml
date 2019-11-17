@@ -6,24 +6,34 @@
         xmlns:local="clr-namespace:WPFValidationINotifyDataErrorInfo"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MatDesWindow" Height="700" Width="1300">
+        Title="MatDesWindow" Height="900" Width="1300">
     
     <Window.Resources>
         <ResourceDictionary Source="Style.xaml"/>
     </Window.Resources>
-    
-    <StackPanel Name="mPanel">
-        <Label Content="User name:" />
 
-        <TextBlock Text="{Binding PayrecToSend.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                   Margin="20"/>
-        <Button Content="Payrec add" 
+    <StackPanel Name="mPanel">
+        <TextBlock Name="labelInfo" TextWrapping="Wrap"/>
+        <TextBlock Text="{Binding PayName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                   />
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Payrec add" 
                 Click="Button_Click"
                 Margin="20"/>
 
-        <Button Content="string add" 
+            <Button Content="string add" 
                 Click="Button_Click_1"
                 Margin="20"/>
+            <Button Content="Attr[str]" 
+                Click="Button_Click_3"
+                Margin="20"/>
+            
+            <Button Content="print" 
+                Click="Button_Click_2"
+                Margin="20"/>
+            
+        </StackPanel>
+        
     </StackPanel>
 </Window>
 <!--<TextBox Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
