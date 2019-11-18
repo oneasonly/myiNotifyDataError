@@ -2,24 +2,26 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 
 namespace WPFValidationINotifyDataErrorInfo
 {
-    public class MainViewModel : BindableBase, INotifyDataErrorInfo
+    public class MainViewModel : ValidatableBindableBase
     {
         private string _userName;
-        private PayRecord _payrecToSend = new PayRecord();        
-        private readonly Dictionary<string, List<string>> _errorsByPropertyName = new Dictionary<string, List<string>>();
+        private PayRecord _payrecToSend = new PayRecord();
+        private ObservableCollection<string> _observAttr = new ObservableCollection<string>() { "obs1", "obs2", "obs3" };
+        private NotifyList<string> _notifyAttr = new NotifyList<string>();
 
         public MainViewModel()
         {
             UserName = null;
             _payrecToSend.AttrStrings = new List<string>() { "one", "two", "three"};
+            _notifyAttr.Set(nameof(NotifyAttr), new List<string>() { "notif1","notif2","notif3" });
         }
-
         public string PayName
         {
             get => PayrecToSend?.Name;
@@ -27,11 +29,10 @@ namespace WPFValidationINotifyDataErrorInfo
             {
                 Trace.WriteLine($"PayName SETTER: nam={PayrecToSend.Name}=>{value};");
                 PayrecToSend.Name = value;
+                Validate(PayName, nameof(PayName));
                 RaisePropertyChanged(nameof(PayName));
-                ValidatePayrec();
             }
         }
-
         public List<string> AttrStrings
         {
             get
@@ -46,7 +47,27 @@ namespace WPFValidationINotifyDataErrorInfo
                 RaisePropertyChanged(nameof(AttrStrings));
             }
         }
-
+        public ObservableCollection<string> ObservAttr
+        {
+            get { Trace.WriteLine($"ObservAttr GET:"); return _observAttr; }
+            set
+            {
+                Trace.WriteLine($"ObservAttr SETTER:");
+                _observAttr = value;
+                RaisePropertyChanged(nameof(ObservAttr));
+            }
+        }
+        public NotifyList<string> NotifyAttr
+        {
+            get { Trace.WriteLine($"NotifyAttr GET:"); return _notifyAttr; }
+            //set
+            //{
+            //    Trace.WriteLine($"NotifyAttr SETTER:");
+            //    _notifyAttr = value;
+            //    RaisePropertyChanged(nameof(_notifyAttr));
+            //    ValidateObservAttr();
+            //}
+        }
         public PayRecord PayrecToSend 
         {
             get => _payrecToSend;
@@ -64,76 +85,7 @@ namespace WPFValidationINotifyDataErrorInfo
             {
                 SetProperty(ref _userName, value);
                 Trace.WriteLine($"UserName SETTER: nam={value};");
-                ValidateUserName();                
-            }
-        }
-
-        public bool HasErrors => _errorsByPropertyName.Any();
-
-        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged=(s,e)=> { };
-
-        public IEnumerable GetErrors(string propertyName)
-        {
-            Trace.WriteLine($"GetErrors() propName={propertyName}");
-            return _errorsByPropertyName.ContainsKey(propertyName) ?
-                _errorsByPropertyName[propertyName] : null;
-        }
-
-        private void OnErrorsChanged(string propertyName)
-        {
-            Trace.WriteLine($"OnErrorsChanged() propName={propertyName}");
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-        }
-
-        private void ValidateUserName()
-        {
-            ClearErrors(nameof(UserName));
-
-            if (string.IsNullOrWhiteSpace(UserName))
-                AddError(nameof(UserName), "Username cannot be empty.");
-
-            if (string.Equals(UserName, "Admin", StringComparison.OrdinalIgnoreCase))
-                AddError(nameof(UserName), "Admin is not valid username.");
-
-            if (UserName == null || UserName?.Length <= 5)
-                AddError(nameof(UserName), "Username must be at least 6 characters long.");
-        }
-
-        private void ValidatePayrec()
-        {
-            Trace.WriteLine($"ValidatePayrec():");
-            ClearErrors(nameof(PayName));
-
-            if (string.IsNullOrWhiteSpace(PayName))
-                AddError(nameof(PayName), "Username cannot be empty.");
-
-            if (string.Equals(PayName, "Admin", StringComparison.OrdinalIgnoreCase))
-                AddError(nameof(PayName), "Admin is not valid username.");
-
-            if (PayName == null || PayName?.Length <= 5)
-                AddError(nameof(PayName), "Username must be at least 6 characters long.");
-        }
-
-        private void AddError(string propertyName, string error)
-        {
-            Trace.WriteLine($"AddError() propName={propertyName} error={error}");
-            if (!_errorsByPropertyName.ContainsKey(propertyName))
-                _errorsByPropertyName[propertyName] = new List<string>();
-
-            if (!_errorsByPropertyName[propertyName].Contains(error))
-            {
-                _errorsByPropertyName[propertyName].Add(error);
-                OnErrorsChanged(propertyName);
-            }
-        }
-
-        private void ClearErrors(string propertyName)
-        {
-            Trace.WriteLine($"ClearErrors() propName={propertyName}");
-            if (_errorsByPropertyName.ContainsKey(propertyName))
-            {
-                _errorsByPropertyName.Remove(propertyName);
-                OnErrorsChanged(propertyName);
+                Validate(UserName, nameof(UserName));
             }
         }
     }

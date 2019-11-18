@@ -88,8 +88,10 @@
     <Compile Include="MatDesWindow.xaml.cs">
       <DependentUpon>MatDesWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NotifyList.cs" />
     <Compile Include="PayRecord.cs" />
     <Compile Include="Startup\ContrainerConfig.cs" />
+    <Compile Include="ValidatableBindableBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

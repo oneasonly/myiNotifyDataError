@@ -31,7 +31,7 @@ namespace WPFValidationINotifyDataErrorInfo
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var txtbox = new TextBox();
-            txtbox.Margin = new Thickness(20);
+            txtbox.Margin = new Thickness(20);            
             HintAssist.SetHint(txtbox, "payrec");
             //var binding = new Binding($"{nameof(model.PayrecToSend)}.{nameof(model.PayrecToSend.Name)}");
             var binding = new Binding($"PayName");
@@ -46,10 +46,11 @@ namespace WPFValidationINotifyDataErrorInfo
         {
             var txtbox = new TextBox();
             txtbox.Margin = new Thickness(20);
-            HintAssist.SetHint(txtbox, "string username");
-            var binding = new Binding($"UserName");
+            HintAssist.SetHint(txtbox, "Payrec.Name");
+            var binding = new Binding($"{nameof(model.PayrecToSend)}.{nameof(model.PayrecToSend.Name)}");
             binding.Mode = BindingMode.TwoWay;
             binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            binding.ValidatesOnNotifyDataErrors = true;
             txtbox.SetBinding(TextBox.TextProperty, binding);
             mPanel.Children.Add(txtbox);
         }
@@ -57,7 +58,7 @@ namespace WPFValidationINotifyDataErrorInfo
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             labelInfo.Text = $"Payrec.Name={model.PayrecToSend.Name};\nPayName={model.PayName}\n";
-            model.AttrStrings.ForEach(x => labelInfo.Text += $"{x}; ");
+            model.NotifyAttr.List.ForEach(x => labelInfo.Text += $"{x}; ");
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
@@ -66,6 +67,18 @@ namespace WPFValidationINotifyDataErrorInfo
             txtbox.Margin = new Thickness(20);
             HintAssist.SetHint(txtbox, "hint AttrStrings");
             var binding = new Binding($"AttrStrings[1]");
+            binding.Mode = BindingMode.TwoWay;
+            binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            txtbox.SetBinding(TextBox.TextProperty, binding);
+            mPanel.Children.Add(txtbox);
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            var txtbox = new TextBox();
+            txtbox.Margin = new Thickness(20);
+            HintAssist.SetHint(txtbox, "NotifyAttr hint");
+            var binding = new Binding($"{nameof(model.NotifyAttr)}[1]");
             binding.Mode = BindingMode.TwoWay;
             binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             txtbox.SetBinding(TextBox.TextProperty, binding);
