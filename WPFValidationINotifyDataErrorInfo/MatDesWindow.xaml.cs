@@ -78,7 +78,9 @@ namespace WPFValidationINotifyDataErrorInfo
             var txtbox = new TextBox();
             txtbox.Margin = new Thickness(20);
             HintAssist.SetHint(txtbox, "NotifyAttr hint");
-            var binding = new Binding($"{nameof(model.NotifyAttr)}[1]");
+            //var binding = new Binding($"[0]");
+            var binding = new Binding();
+            binding.Path = new PropertyPath("NotifyAttr[1]");
             binding.Mode = BindingMode.TwoWay;
             binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             txtbox.SetBinding(TextBox.TextProperty, binding);

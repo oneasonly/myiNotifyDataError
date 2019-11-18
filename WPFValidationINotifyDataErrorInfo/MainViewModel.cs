@@ -22,6 +22,16 @@ namespace WPFValidationINotifyDataErrorInfo
             _payrecToSend.AttrStrings = new List<string>() { "one", "two", "three"};
             _notifyAttr.Set(nameof(NotifyAttr), new List<string>() { "notif1","notif2","notif3" });
         }
+        public string this[int index]
+        {
+            get => AttrStrings[index];
+            set
+            {
+                AttrStrings[index] = value;
+                Validate(value, $"[{index}]");
+                RaisePropertyChanged($"[{index}]");
+            }
+        }
         public string PayName
         {
             get => PayrecToSend?.Name;
@@ -29,8 +39,8 @@ namespace WPFValidationINotifyDataErrorInfo
             {
                 Trace.WriteLine($"PayName SETTER: nam={PayrecToSend.Name}=>{value};");
                 PayrecToSend.Name = value;
-                Validate(PayName, nameof(PayName));
-                RaisePropertyChanged(nameof(PayName));
+                Validate(PayName);
+                RaisePropertyChanged();
             }
         }
         public List<string> AttrStrings
@@ -85,7 +95,7 @@ namespace WPFValidationINotifyDataErrorInfo
             {
                 SetProperty(ref _userName, value);
                 Trace.WriteLine($"UserName SETTER: nam={value};");
-                Validate(UserName, nameof(UserName));
+                Validate(UserName);
             }
         }
     }

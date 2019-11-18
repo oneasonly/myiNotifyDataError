@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace WPFValidationINotifyDataErrorInfo
 {
-    public class NotifyList<T> : BindableBase 
+    public class NotifyList<T> : ValidatableBindableBase
     {
         private List<T> _list;
         private string _propertyName;
@@ -20,9 +20,11 @@ namespace WPFValidationINotifyDataErrorInfo
             set 
             {
                 string indexedName = $"{_propertyName}[{index}]";
-                Trace.WriteLine($"in NotifyList<T> SETTER={indexedName}; val={value}");
+                Trace.WriteLine($"NotifyList<T>.SETTER={indexedName}; val={value}");
                _list[index] = value;                
                 RaisePropertyChanged(indexedName);
+                //Validate(value.ToString(), indexedName);
+                Validate(value.ToString());
             }
         }
         public List<T> List => _list;
@@ -31,9 +33,5 @@ namespace WPFValidationINotifyDataErrorInfo
             _list = list;
             _propertyName = propertyName;
         }
-
-        
-
-
     }
 }
